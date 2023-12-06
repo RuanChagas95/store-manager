@@ -12,4 +12,10 @@ const getByidController = async (req, res) => {
     
   res.status(getById.status).json(getById.payload);
 };
-module.exports = { getAllController, getByidController };
+
+const createProductController = async (req, res) => {
+  const result = await productsService.createProductService(req.body);
+  res.status(result.status).json(result.payload);
+};
+
+module.exports = { getAllController, getByidController, createProductController };

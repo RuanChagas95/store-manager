@@ -11,4 +11,11 @@ const getByIdService = async (id) => {
   return product ? { status: status.OK, payload: product } 
     : { status: status.NOT_FOUND, payload: { message: 'Product not found' } };
 };
-module.exports = { getAllService, getByIdService };
+
+const createProductService = async (product) => {
+  const { name } = product;
+  const result = await model.createProductModel(name);
+  return { status: status.CREATED, payload: result };
+};
+
+module.exports = { getAllService, getByIdService, createProductService };
