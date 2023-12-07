@@ -10,4 +10,10 @@ const getByIdService = async (id) => {
   return { status: 200, payload: sales };
 };
 
-module.exports = { getAllService, getByIdService };
+const createService = async (sales) => {
+  const id = await model.createSaleModel();
+  await Promise.all(sales.map((sale) => model.addProductModel(sale, id)));
+  return { status: 201, payload: { id, itemsSold: sales } };
+};
+
+module.exports = { getAllService, getByIdService, createService };

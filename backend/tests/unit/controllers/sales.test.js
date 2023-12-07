@@ -33,4 +33,18 @@ describe('Sales controller', function () {
     expect(service.getByIdService.calledWith(id)).to.be.equal(true);
     expect(res.status.calledWith(200)).to.be.equal(true);
   });
+
+  it('createController send the correct object', async function () {
+    const sales = [{ productId: 1, quantity: 1 }];
+    const req = { body: sales };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    sinon.stub(service, 'createService').resolves({ status: 200, payload: { id: 1, ...sales[0] } });
+    await controller.createController(req, res);
+    expect(service.createService.calledWith(sales)).to.be.equal(true);
+    expect(res.status.calledWith(200)).to.be.equal(true);
+    expect(res.json.calledWith({ id: 1, ...sales[0] })).to.be.equal(true);
+  });
 });

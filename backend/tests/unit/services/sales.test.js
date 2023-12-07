@@ -3,7 +3,7 @@ const sinon = require('sinon');
 
 const model = require('../../../src/models/sales');
 
-const { getAllService, getByIdService } = require('../../../src/services/sales');
+const { getAllService, getByIdService, createService } = require('../../../src/services/sales');
 
 const sales = [
   {
@@ -17,7 +17,7 @@ const sales = [
 ];
 describe('sales Service', function () {
   afterEach(function () { return sinon.restore(); });
-  it('should return an object with a status 200 and a sales array', async function () {
+  it('GetAllService should return an object with a status 200 and a sales array', async function () {
     sinon.stub(model, 'getAllModel').resolves(sales);
 
     const result = await getAllService();
@@ -29,14 +29,43 @@ describe('sales Service', function () {
     expect(result.payload).to.be.deep.equal(sales);
   });
 
-  it('should return an object with a status 200 and a sale array', async function () {
-    sinon.stub(model, 'getByIdModel').resolves([sales[0]]);
+  describe('getByIdService', function () {
+    it('should return an object with a status 200 and a sale array', async function () {
+      sinon.stub(model, 'getByIdModel').resolves([sales[0]]);
+      
+      const result = await getByIdService(1);
+      
+      expect(result).to.be.an('object');
+      expect(result).to.have.a.property('status', 200);
+      expect(result).to.have.a.property('payload');
+      expect(result.payload).to.be.deep.equal([sales[0]]);
+    });
 
-    const result = await getByIdService(1);
+    it('should return an object with a status 404 and a message', async function () {
+      sinon.stub(model, 'getByIdModel').resolves([]);
+      
+      const result = await getByIdService(1);
+      
+      expect(result).to.be.an('object');
+      expect(result).to.have.a.property('status', 404);
+      expect(result).to.have.a.property('payload');
+      expect(result.payload).to.be.deep.equal({ message: 'Sale not found' });
+    });
+  });
 
-    expect(result).to.be.an('object');
-    expect(result).to.have.a.property('status', 200);
-    expect(result).to.have.a.property('payload');
-    expect(result.payload).to.be.deep.equal([sales[0]]);
+  describe('createService', function () {
+    it('should return an object with a status 201 and a sale array', async function () {
+      sinon.stub(model, 'createSaleModel').resolves(1);
+      sinon.stub(model, 'addProductModel').resolves();
+      
+      const result = await createService(sales);
+      
+      expect(result).to.be.an('object');
+      expect(result).to.have.a.property('status', 201);
+      expect(result).to.have.a.property('payload');
+      expect(result.payload).to.be.deep.equal({ id: 1, itemsSold: sales });
+      expect(model.createSaleModel.calledOnce).to.be.equal(true);
+      expect(model.addProductModel.calledTwice).to.be.equal(true);
+    });
   });
 });

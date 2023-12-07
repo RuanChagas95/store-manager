@@ -26,4 +26,16 @@ const getByIdModel = async (id) => {
   }));
 };
 
-module.exports = { getAllModel, getByIdModel };
+const createSaleModel = async () => {
+  const [result1] = (await connection.execute('INSERT INTO sales (id) VALUES (DEFAULT)'));
+  return result1.insertId;
+};
+
+const addProductModel = async (sale, id) => {
+  const { productId, quantity } = sale;
+  return connection.execute(
+    'INSERT INTO sales_products (sale_id, product_id, quantity) VALUES (?, ?, ?)',
+    [id, productId, quantity],
+  );
+};
+module.exports = { getAllModel, getByIdModel, createSaleModel, addProductModel };
