@@ -75,6 +75,24 @@ describe('verifySales Middleware', function () {
     expect(res.json.calledWith({ message: '"quantity" must be greater than or equal to 1' })).to.be.equal(true);
   });
 
+  it('if quantity is zero return status 422 and a message', async function () {
+    const req = {
+      body: [
+        { productId: 1, quantity: 0 },
+      ],
+    };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+    const next = sinon.stub();
+    
+    await verifySales(req, res, next);
+    
+    expect(res.status.calledWith(422)).to.be.equal(true);
+    expect(res.json.calledWith({ message: '"quantity" must be greater than or equal to 1' })).to.be.equal(true);
+  });
+
   it('next to be called if all is ok', async function () {
     const req = {
       body: [
