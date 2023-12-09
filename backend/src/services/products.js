@@ -18,4 +18,10 @@ const createProductService = async (product) => {
   return { status: status.CREATED, payload: result };
 };
 
-module.exports = { getAllService, getByIdService, createProductService };
+const updateProductService = async (id, product) => {
+  const { name } = product;
+  await model.updateProductModel(id, name);
+  return { status: status.OK, payload: { id: Number(id), name } };
+};
+
+module.exports = { getAllService, getByIdService, createProductService, updateProductService };

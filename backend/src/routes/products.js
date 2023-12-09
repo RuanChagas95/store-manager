@@ -1,11 +1,12 @@
 const route = require('express').Router();
-const { verifyProduct } = require('../middlewares/products');
+const { validateName, productsExist } = require('../middlewares/products');
 
-const { getAllController, getByidController,
+const { getAllController, getByidController, updateProductController,
   createProductController } = require('../controllers/products');
 
 route.get('/:id', getByidController);
 route.get('/', getAllController);
-route.post('/', verifyProduct, createProductController);
+route.post('/', validateName, createProductController);
+route.put('/:id', validateName, productsExist, updateProductController);
 
 module.exports = route;

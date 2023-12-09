@@ -1,6 +1,6 @@
 const productsModel = require('../../models/products');
 
-const verifyProduct = (req, res, next) => {
+const validateName = (req, res, next) => {
   const { name } = req.body;
   if (!name || typeof name !== 'string') {
     return res.status(400).json({ message: '"name" is required' });
@@ -12,7 +12,7 @@ const verifyProduct = (req, res, next) => {
 };
 
 const productsExist = async (req, res, next) => {
-  const sales = req.body;
+  const sales = Array.isArray(req.body) ? req.body : [{ productId: req.params.id }];
   const products = await Promise.all(
     sales.map(({ productId }) => (productsModel.getByIdModel(productId))),
   );
@@ -23,4 +23,4 @@ const productsExist = async (req, res, next) => {
   return notFound ? res.status(404).json({ message: notFound }) : next();
 };
 
-module.exports = { verifyProduct, productsExist };
+module.exports = { validateName, productsExist };

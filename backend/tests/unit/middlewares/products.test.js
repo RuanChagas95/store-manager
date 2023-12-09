@@ -1,10 +1,10 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
 
-const { verifyProduct, productsExist } = require('../../../src/middlewares/products');
+const { validateName, productsExist } = require('../../../src/middlewares/products');
 const productsModel = require('../../../src/models/products');
 
-describe('verifyProduct Middleware', function () {
+describe('validateName Middleware', function () {
   it('if there are no name return status 400 and a message', async function () {
     const req = { body: { name: '' } };
     const res = {
@@ -12,7 +12,7 @@ describe('verifyProduct Middleware', function () {
       json: sinon.stub(),
     };
     const next = sinon.stub();
-    await verifyProduct(req, res, next);
+    await validateName(req, res, next);
     expect(res.status.calledWith(400)).to.be.equal(true);
     expect(res.json.calledWith({ message: '"name" is required' })).to.be.equal(true);
     expect(next.called).to.be.equal(false);
@@ -25,7 +25,7 @@ describe('verifyProduct Middleware', function () {
       json: sinon.stub(),
     };
     const next = sinon.stub();
-    await verifyProduct(req, res, next);
+    await validateName(req, res, next);
     expect(res.status.calledWith(400)).to.be.equal(true);
     expect(res.json.calledWith({ message: '"name" is required' })).to.be.equal(true);
     expect(next.called).to.be.equal(false);
@@ -38,7 +38,7 @@ describe('verifyProduct Middleware', function () {
       json: sinon.stub(),
     };
     const next = sinon.stub();
-    await verifyProduct(req, res, next);
+    await validateName(req, res, next);
     expect(res.status.calledWith(422)).to.be.equal(true);
     expect(res.json.calledWith({ message: '"name" length must be at least 5 characters long' })).to.be.equal(true);
     expect(next.called).to.be.equal(false);
@@ -51,7 +51,7 @@ describe('verifyProduct Middleware', function () {
       json: sinon.stub(),
     };
     const next = sinon.stub();
-    await verifyProduct(req, res, next);
+    await validateName(req, res, next);
     expect(next.called).to.be.equal(true);
   });
   describe('productsExist Middleware', function () {
