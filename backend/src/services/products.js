@@ -24,4 +24,15 @@ const updateProductService = async (id, product) => {
   return { status: status.OK, payload: { id: Number(id), name } };
 };
 
-module.exports = { getAllService, getByIdService, createProductService, updateProductService };
+const deleteProductService = async (id) => {
+  await model.deleteProductModel(id);
+  return { status: status.NO_CONTENT, payload: undefined };
+};
+
+module.exports = { 
+  getAllService,
+  getByIdService,
+  createProductService,
+  updateProductService,
+  deleteProductService, 
+};

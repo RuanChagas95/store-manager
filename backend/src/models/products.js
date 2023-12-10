@@ -29,4 +29,13 @@ const updateProductModel = async (id, name) => {
   return result;
 };
 
-module.exports = { getAllModel, getByIdModel, createProductModel, updateProductModel };
+const deleteProductModel = async (id) => 
+  connection.execute('DELETE FROM products WHERE id=?', [id]);
+
+module.exports = { 
+  getAllModel,
+  getByIdModel,
+  createProductModel,
+  updateProductModel,
+  deleteProductModel,
+};

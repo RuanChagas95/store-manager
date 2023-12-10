@@ -24,7 +24,16 @@ const updateProductController = async (req, res) => {
   res.status(result.status).json(result.payload);
 };
 
-module.exports = { getAllController,
+const deleteProductController = async (req, res) => {
+  const { id } = req.params;
+  const result = await productsService.deleteProductService(id);
+  res.status(result.status).json(result.payload);
+};
+
+module.exports = { 
+  getAllController,
   getByidController,
   createProductController,
-  updateProductController };
+  updateProductController,
+  deleteProductController,
+};
