@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
 const model = require('../../../src/models/products');
-const { getAllService, getByIdService, createProductService } = require('../../../src/services/products');
+const { getAllService, getByIdService, createProductService, updateProductService } = require('../../../src/services/products');
 
 const mockProducts = [
   {
@@ -68,6 +68,24 @@ describe('Products services', function () {
       const response = await createProductService(product.name);
       expect(response.status).to.be.equal(201);
       expect(response.payload).to.be.equal(product);
+    });
+  });
+
+  describe('updateProductService', function () {
+    afterEach(function () {
+      sinon.restore();
+    });
+
+    it('updateProductService returns an object with status 200 and payload with the product updated', async function () {
+      const product = {
+        name: 'cinto do batman',
+      };
+      const id = '4';
+      sinon.stub(model, 'updateProductModel').resolves(product);
+      const response = await updateProductService(id, product);
+      expect(model.updateProductModel.calledWith(id, product.name)).to.be.equal(true);
+      expect(response.status).to.be.equal(200);
+      expect(response.payload).to.be.deep.equal({ id: Number(id), name: product.name });
     });
   });
 });
