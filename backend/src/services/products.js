@@ -29,10 +29,16 @@ const deleteProductService = async (id) => {
   return { status: status.NO_CONTENT, payload: undefined };
 };
 
+const searchProductService = async (q) => {
+  const products = await model.searchProductModel(q);
+  return { status: status.OK, payload: products };
+};
+
 module.exports = { 
   getAllService,
   getByIdService,
   createProductService,
   updateProductService,
-  deleteProductService, 
+  deleteProductService,
+  searchProductService,
 };

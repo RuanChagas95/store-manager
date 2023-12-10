@@ -30,10 +30,17 @@ const deleteProductController = async (req, res) => {
   res.status(result.status).json(result.payload);
 };
 
+const searchProductController = async (req, res) => {
+  const { q } = req.query;
+  const result = await productsService.searchProductService(q);
+  res.status(result.status).json(result.payload);
+};
+
 module.exports = { 
   getAllController,
   getByidController,
   createProductController,
   updateProductController,
   deleteProductController,
+  searchProductController,
 };
