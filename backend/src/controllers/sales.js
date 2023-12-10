@@ -17,4 +17,15 @@ const createController = async (req, res) => {
   res.status(sales.status).json(sales.payload);
 };
 
-module.exports = { getAllController, getByidController, createController };
+const deleteController = async (req, res) => {
+  const { id } = req.params;
+  const { status, payload } = await service.deleteService(id);
+  res.status(status).json(payload);
+};
+
+module.exports = { 
+  getAllController,
+  getByidController,
+  createController,
+  deleteController,
+};

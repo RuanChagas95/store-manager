@@ -1,3 +1,7 @@
 const verifySales = require('./verifySales');
+const saleExists = require('./saleExists');
 
-module.exports = { verifySales };
+module.exports = { 
+  verifySales,
+  saleExists,
+};

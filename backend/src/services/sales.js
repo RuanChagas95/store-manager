@@ -1,4 +1,5 @@
 const model = require('../models/sales');
+const { status } = require('../utils/httpStatus');
 
 const getAllService = async () => {
   const sales = await model.getAllModel();
@@ -16,4 +17,14 @@ const createService = async (sales) => {
   return { status: 201, payload: { id, itemsSold: sales } };
 };
 
-module.exports = { getAllService, getByIdService, createService };
+const deleteService = async (id) => {
+  await model.deleteModel(id);
+  return { status: status.NO_CONTENT, payload: undefined };
+};
+
+module.exports = {
+  getAllService,
+  getByIdService,
+  createService,
+  deleteService,
+};

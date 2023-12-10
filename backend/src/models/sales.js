@@ -38,4 +38,15 @@ const addProductModel = async (sale, id) => {
     [id, productId, quantity],
   );
 };
-module.exports = { getAllModel, getByIdModel, createSaleModel, addProductModel };
+
+const deleteModel = async (id) => {
+  await connection.execute('DELETE FROM sales WHERE id = ?', [id]);
+};
+
+module.exports = { 
+  getAllModel,
+  getByIdModel,
+  createSaleModel,
+  addProductModel,
+  deleteModel, 
+};
